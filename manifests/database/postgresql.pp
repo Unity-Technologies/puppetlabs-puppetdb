@@ -9,19 +9,17 @@ class puppetdb::database::postgresql(
   $manage_package_repo  = $puppetdb::params::manage_pg_repo,
   $postgres_version     = $puppetdb::params::postgres_version,
 ) inherits puppetdb::params {
+  class { 'postgresql::globals':
+    encoding        => 'UTF8',
+    locale          => 'en_US.UTF-8',
+    version         => '94',
+    postgis_version => '2.1',
+  }
 
-  if $manage_server {
-    if $manage_package_repo {
-      class { '::postgresql::globals':
-        manage_package_repo => true,
-        version             => $postgres_version,
-      }
-    }
-    # get the pg server up and running
-    class { '::postgresql::server':
-      ip_mask_allow_all_users => '0.0.0.0/0',
-      listen_addresses        => $listen_addresses,
-    }
+  # get the pg server up and running
+  class { '::postgresql::server':
+    ip_mask_allow_all_users => '0.0.0.0/0',
+    listen_addresses        => $listen_addresses,
   }
 
   # create the puppetdb database

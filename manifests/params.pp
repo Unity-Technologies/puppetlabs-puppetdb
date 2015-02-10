@@ -64,24 +64,38 @@ class puppetdb::params {
   $puppetdb_service     = 'puppetdb'
   $puppetdb_user        = 'puppetdb'
   $puppetdb_group       = 'puppetdb'
-  $confdir              = '/etc/puppetdb/conf.d'
-  $puppet_confdir       = '/etc/puppet'
   $masterless           = false
   $terminus_package     = 'puppetdb-terminus'
-  $ssl_dir              = '/etc/puppetdb/ssl'
 
   case $::osfamily {
     'RedHat', 'Suse', 'Archlinux': {
+      $confdir              = '/etc/puppetdb/conf.d'
+      $puppet_confdir       = '/etc/puppet'
+      $ssl_dir              = '/etc/puppetdb/ssl'
       $puppetdb_initconf    = '/etc/sysconfig/puppetdb'
       $puppet_service_name  = 'puppetmaster'
       $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
     }
     'Debian': {
+      $confdir              = '/etc/puppetdb/conf.d'
+      $puppet_confdir       = '/etc/puppet'
+      $ssl_dir              = '/etc/puppetdb/ssl'
       $puppetdb_initconf    = '/etc/default/puppetdb'
       $puppet_service_name  = 'puppetmaster'
       $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
     }
     'OpenBSD': {
+      $confdir              = '/etc/puppetdb/conf.d'
+      $puppet_confdir       = '/etc/puppet'
+      $ssl_dir              = '/etc/puppetdb/ssl'
+      $puppetdb_initconf    = undef
+      $puppet_service_name  = 'puppetmasterd'
+      $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+    }
+    'FreeBSD': {
+      $confdir              = '/usr/local/etc/puppetdb/conf.d'
+      $puppet_confdir       = '/usr/local/etc/puppet'
+      $ssl_dir              = '/usr/local/etc/puppetdb/ssl'
       $puppetdb_initconf    = undef
       $puppet_service_name  = 'puppetmasterd'
       $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
